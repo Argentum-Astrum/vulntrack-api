@@ -2,7 +2,7 @@ PYTHON ?= python
 REPORT_DIR ?= reports
 PIP_AUDIT_CACHE_DIR ?= $(REPORT_DIR)/.pip-audit-cache
 
-.PHONY: format format-check lint unit integration test build security verify
+.PHONY: format format-check lint unit integration test build security hooks-test verify
 
 format:
 	$(PYTHON) -m ruff format .
@@ -41,5 +41,15 @@ security:
 		--requirement requirements-audit.txt \
 		--format json \
 		--output $(REPORT_DIR)/pip-audit.json
+	$(PYTHON) -m detect_secrets scan \
+		--all-files \
+		--exclude-files '(^|/)(\.git|\.venv|build|dist|htmlcov|reports)/' \
+		> $(REPORT_DIR)/detect-secrets.json
+	$(PYTHON) scripts/check_secret_report.py $(REPORT_DIR)/detect-secrets.json
 
-verify: format-check lint test build security
+hooks-test:
+	sh -n .githooks/pre-commit
+	sh -n .githooks/commit-msg
+	sh -n .githooks/pre-push
+
+verify: format-check lint test build security hooks-test

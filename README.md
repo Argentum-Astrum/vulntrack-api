@@ -59,6 +59,23 @@ The equivalent GitLab configuration uses the same Make targets. Build and
 machine-readable report artifacts are retained by each platform; release jobs
 run only in the documented release context.
 
+## Versioned Git hooks
+
+Enable the repository hooks for this clone:
+
+`./scripts/install-hooks.sh`
+
+The hooks check formatting and lint before commit, enforce Conventional Commits
+subjects, and run tests before push. CI remains authoritative because local
+hooks can be bypassed. Disable them with:
+
+`./scripts/install-hooks.sh --uninstall`
+
+## Security reporting
+
+Do not place exploit details or credentials in a public issue. Follow
+[`SECURITY.md`](SECURITY.md) for supported versions and coordinated disclosure.
+
 ## License
 
 MIT
