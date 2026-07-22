@@ -24,7 +24,7 @@ diff, timestamps и machine-readable данные без сокрытия кон
 | [#27](https://github.com/Argentum-Astrum/vulntrack-api/issues/27) | Git hooks | закрыта PR #33 |
 | [#28](https://github.com/Argentum-Astrum/vulntrack-api/issues/28) | release v1.1.0 | закрыта PR #37, release run #45 успешен |
 | [#29](https://github.com/Argentum-Astrum/vulntrack-api/issues/29) | platform research | закрыта PR #34 |
-| [#38](https://github.com/Argentum-Astrum/vulntrack-api/issues/38) | final evidence reconciliation | закрывается финальным docs PR |
+| [#38](https://github.com/Argentum-Astrum/vulntrack-api/issues/38) | final evidence reconciliation | PR #39 содержит `Closes #38` |
 
 Итого создано 16 осмысленных issues; у каждой есть типовая label,
 acceptance criteria и assignee. Создание milestones недоступно через
@@ -51,6 +51,7 @@ transitions, практический GitLab или annotated-tag детали �
 | [#35](https://github.com/Argentum-Astrum/vulntrack-api/pull/35) | release v1.0.0 | merged after run 29885778888 |
 | [#36](https://github.com/Argentum-Astrum/vulntrack-api/pull/36) | filters and statistics | merged, 65 tests in run 29886233520 |
 | [#37](https://github.com/Argentum-Astrum/vulntrack-api/pull/37) | release v1.1.0 | merged after run 29886462838 |
+| [#39](https://github.com/Argentum-Astrum/vulntrack-api/pull/39) | final evidence audit | full run 29887024547 successful; closes #38 |
 
 Review evidence for PR #30:
 
@@ -95,6 +96,7 @@ merge subjects сохранены как доказательство PR topolog
 | [v1.0 run #37](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29885871737) | 59 tests, all five jobs including release success | [quality 8516483911](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29885871737/artifacts/8516483911), [package 8516490665](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29885871737/artifacts/8516490665), [security 8516497535](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29885871737/artifacts/8516497535) |
 | [v1.1 feature](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29886233520) | 65 tests, 97.67%, mandatory jobs success | quality, package, and security artifacts |
 | [v1.1 run #45](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29886550409) | 65 tests, all five jobs including release success | [quality 8516712508](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29886550409/artifacts/8516712508), [package 8516716965](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29886550409/artifacts/8516716965), [security 8516723199](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29886550409/artifacts/8516723199) |
+| [final audit](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29887024547) | 65 tests, 97.67%, all mandatory jobs success | final report/evidence content before PR #39 merge |
 
 Machine-readable outputs: JUnit XML, Cobertura XML, Bandit JSON, pip-audit
 JSON, detect-secrets JSON. Package artifact contains wheel and sdist. Artifact

@@ -84,8 +84,9 @@ Milestones не создавались: доступный GitHub connector по
 
 ## 9. Pull requests и code review
 
-До финального evidence audit слиты десять PR: #3, #16 и #30–#37. Каждый
-крупный слой и release прошёл отдельным PR с checks. В PR #30 опубликован inline
+Финальный evidence PR #39 доводит проверяемое число PR до 11: #3, #16,
+#30–#37 и #39. Каждый крупный слой и release прошёл отдельным PR с checks; у
+#39 успешен run 29887024547. В PR #30 опубликован inline
 comment о динамической SQL-строке. Commit `547b67c` заменил её статическим
 parameterized update и добавил regression test; CI повторно прошёл, автор
 ответил и разрешил discussion.

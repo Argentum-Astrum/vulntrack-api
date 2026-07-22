@@ -14,7 +14,7 @@
 | 2 реальных конфликта | выполнено | `docs/conflict-resolution.md`, remote merges `11144a7` и `9142801` | оба two-parent commits проверяемы на GitHub |
 | tags/releases v1.0.0 и v1.1.0 | выполнено | release URLs, runs 29885871737/29886550409 | оба tag target проверены, у каждого wheel + sdist |
 | GitHub Flow обоснован | выполнено | `docs/git-workflow.md` | короткоживущие issue branches + PR |
-| ≥5 GitHub PR | выполнено | PR #3/#16/#30–#37 | 10 merged PR до final evidence PR |
+| ≥5 GitHub PR | выполнено | PR #3/#16/#30–#37/#39 | 11 PR including final evidence audit; full CI passed |
 | ≥5 GitLab MR | ограничение | `.gitlab-ci.yml` | GitLab не подключён; пользователь разрешил завершить эту часть самостоятельно |
 | У PR есть issue и проверки | выполнено | PR descriptions, checks, evidence register | закрывающие keywords использованы в новых PR |
 | Inline review comments | выполнено | PR #30 review/discussion | содержательное SQL замечание |
