@@ -45,6 +45,44 @@ verified the complete result including detect-secrets.
 - second parent: `a8cebc4` (main after CI PR);
 - implementing PR: [#33](https://github.com/Argentum-Astrum/vulntrack-api/pull/33).
 
+## Conflict 2 — engineering documentation versus security baseline
+
+### Cause
+
+Branch `docs/24-engineering-docs` started at `486a32c` while the CI and
+security branches continued independently. The docs branch rewrote the project
+guide and added a release-oriented security policy. Meanwhile PR #33 added
+tested hooks, concrete security commands, and a pre-release disclosure policy.
+
+Synchronizing docs tip `6f430a3` with main `7d17523` produced:
+
+```text
+CONFLICT (content): Merge conflict in README.md
+CONFLICT (add/add): Merge conflict in SECURITY.md
+```
+
+### Resolution
+
+- `README.md`: retained the fuller installation, API, documentation, and
+  release guide; integrated the executed hooks/security workflow and added the
+  unexecuted Bitbucket portability reference.
+- `SECURITY.md`: replaced contradictory version tables with one policy valid
+  before and after tagging, retained the explicit statement that repository
+  settings are separate evidence, and combined all tested baseline controls.
+
+No side was selected wholesale. Conflict markers were removed manually and
+`git diff --check` passed. Local verification after resolution: 58 tests,
+97.39% branch coverage, Ruff format/lint, package build, Bandit, hook syntax,
+and YAML parsing for all three platform configurations. The PR pipeline is the
+authoritative verification for the dependency and secret audits.
+
+### Proof
+
+- local two-parent resolution commit: `98bc6a7`;
+- first parent: `6f430a3` (docs branch);
+- second parent: `7d17523` (main after security/hooks PR);
+- remote resolution commit and implementing PR are added after publication.
+
 ## Resolution checklist
 
 For each conflict:

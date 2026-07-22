@@ -86,8 +86,10 @@ security ветки конфликтовали в `Makefile`, `README.md`, `pypr
 `requirements-audit.txt`. Remote merge commit `11144a7` имеет родителей
 `09238aa` и `a8cebc4`, что машинно подтверждает настоящий merge.
 
-Второй конфликт между docs и обновлённым `main` будет добавлен в тот же файл
-после разрешения и проверки.
+Второй конфликт возник между docs и обновлённым `main` в `README.md` и
+`SECURITY.md`. Локальный merge `98bc6a7` имеет родителей `6f430a3` и
+`7d17523`; ручное объединение проверено 58 tests и 97.39% branch coverage.
+Remote hash и PR добавляются после публикации ветви.
 
 ## Releases
 
