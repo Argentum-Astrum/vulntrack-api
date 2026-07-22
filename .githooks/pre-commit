@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+
+python_command="${PYTHON:-python}"
+
+"${python_command}" -m ruff format --check .
+"${python_command}" -m ruff check .
