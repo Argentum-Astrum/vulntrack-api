@@ -2,11 +2,10 @@ from collections.abc import Iterator
 from pathlib import Path
 from uuid import uuid4
 
-from fastapi.testclient import TestClient
 import pytest
+from fastapi.testclient import TestClient
 
 from vulntrack.main import create_app
-
 
 VALID_PAYLOAD: dict[str, object] = {
     "title": "Insecure direct object reference",

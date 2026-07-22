@@ -121,7 +121,8 @@ Commits in `commit-msg`, and run tests before push. Disable them with
 Both platform configurations call the same Make targets:
 
 - [GitHub Actions workflow](.github/workflows/ci.yml);
-- [GitLab CI/CD configuration](.gitlab-ci.yml).
+- [GitLab CI/CD configuration](.gitlab-ci.yml);
+- [Bitbucket Pipelines reference](bitbucket-pipelines.yml).
 
 The logical sequence is `lint → test → build → security → release`. Pull
 requests, branches, `main`, and version tags are covered. CI publishes JUnit,
@@ -141,6 +142,11 @@ succeed. See [`docs/ci-cd.md`](docs/ci-cd.md).
 - [Evidence register](docs/evidence.md)
 - [Assignment compliance](docs/assignment-compliance.md)
 - [Full report](docs/report.md)
+
+## Security reporting
+
+Do not place exploit details or credentials in a public issue. Follow
+[`SECURITY.md`](SECURITY.md) for supported versions and coordinated disclosure.
 
 ## Releases
 

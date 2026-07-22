@@ -2,26 +2,42 @@
 
 ## Supported versions
 
-| Version | Supported |
+| Version | Support status |
 |---|---|
-| Latest `1.1.x` | Yes |
-| `1.0.x` | Security fixes until the assignment is accepted |
-| `<1.0` | No |
+| Default branch before `v1.0.0` | Best-effort security fixes |
+| Latest tagged minor release | Supported |
+| Older minor releases | Not supported after a newer minor is published |
 
-## Report a vulnerability
+This table describes an educational project, not a commercial support
+commitment. It is updated when the release policy changes.
 
-Do not disclose exploit details, credentials, personal data, or private
-addresses in a public issue. Prefer GitHub private vulnerability reporting when
-it is enabled. Otherwise contact the maintainer through an existing private
-channel and include the affected version, impact, minimal reproduction, and
-suggested remediation.
+## Reporting a vulnerability
 
-The maintainer aims to acknowledge reports within seven calendar days and to
-coordinate disclosure. Tool output is not proof of either vulnerability or
-absence of vulnerabilities; findings receive human review.
+Do not open a public issue containing an exploit, credential, private address,
+personal data, or an unredacted production log.
+
+1. Use GitHub's **Report a vulnerability** option on the Security tab if it is
+   available for the repository.
+2. If private vulnerability reporting is unavailable, contact the repository
+   owner through an already established private channel before disclosure.
+3. Include the affected version, impact, reproducible steps, and a minimal
+   proof-of-concept with all secrets and personal data removed.
+
+The maintainer aims to acknowledge a report within seven calendar days, agree
+on a disclosure timeline, and credit the reporter unless anonymity is
+requested. This document does not claim that GitHub private vulnerability
+reporting is enabled; repository settings are separate evidence.
 
 ## Baseline controls
 
-The project uses input validation, parameterized SQL, unit and integration
-tests, Ruff, Bandit, dependency auditing, secret detection, least-privilege CI
-permissions, and release artifacts derived from a gated build.
+- Pydantic rejects malformed and unexpected request fields.
+- SQLite statements use parameters and static identifiers.
+- Ruff, unit tests, and integration tests run locally and in CI.
+- Bandit performs source analysis.
+- pip-audit checks the pinned runtime dependency closure.
+- detect-secrets blocks candidate credentials in tracked content.
+- GitHub Actions uses read-only repository permissions except for the release
+  job, and release artifacts come from the gated build.
+
+Tool output is not proof of either a vulnerability or the absence of
+vulnerabilities. Findings require human review.

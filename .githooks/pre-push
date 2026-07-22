@@ -1,0 +1,6 @@
+#!/bin/sh
+set -eu
+
+python_command="${PYTHON:-python}"
+
+"${python_command}" -m pytest -q
