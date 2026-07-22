@@ -31,7 +31,7 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
 
     application = FastAPI(
         title="VulnTrack API",
-        version="1.0.0",
+        version="1.1.0",
         description="Register, triage, and report information-security findings.",
         lifespan=lifespan,
     )
