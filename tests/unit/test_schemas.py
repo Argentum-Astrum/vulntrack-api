@@ -134,6 +134,11 @@ def test_finding_update_rejects_missing_values(payload: dict[str, object]) -> No
         FindingUpdate.model_validate(payload)
 
 
+def test_finding_update_rejects_unknown_fields() -> None:
+    with pytest.raises(ValidationError):
+        FindingUpdate.model_validate({"owner": "attacker-controlled"})
+
+
 def test_finding_create_rejects_unexpected_fields() -> None:
     payload = {**VALID_CREATE_PAYLOAD, "unexpected": True}
 

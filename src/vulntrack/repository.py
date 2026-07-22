@@ -98,16 +98,29 @@ class SQLiteFindingRepository:
         payload: FindingUpdate,
     ) -> FindingRead | None:
         """Apply a validated partial update and return the current record."""
-        if self.get(finding_id) is None:
+        current = self.get(finding_id)
+        if current is None:
             return None
 
-        changes = payload.model_dump(mode="json", exclude_unset=True)
-        changes["updated_at"] = datetime.now(UTC).isoformat()
-        assignments = ", ".join(f"{name} = ?" for name in changes)
-        values = [*changes.values(), str(finding_id)]
+        changes = payload.model_dump(exclude_unset=True)
+        updated = current.model_copy(
+            update={**changes, "updated_at": datetime.now(UTC)}
+        )
+        values = updated.model_dump(mode="json")
         with self._connection() as connection:
             connection.execute(
-                f"UPDATE findings SET {assignments} WHERE id = ?",  # noqa: S608
+                """
+                UPDATE findings SET
+                    title = :title,
+                    affected_asset = :affected_asset,
+                    description = :description,
+                    source = :source,
+                    severity = :severity,
+                    status = :status,
+                    cvss_score = :cvss_score,
+                    updated_at = :updated_at
+                WHERE id = :id
+                """,
                 values,
             )
         return self.get(finding_id)
