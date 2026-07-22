@@ -5,13 +5,14 @@ import pytest
 from pydantic import ValidationError
 
 from vulntrack.domain import FindingStatus, Severity
-from vulntrack.schemas import FindingCreate, FindingRead
+from vulntrack.schemas import FindingCreate, FindingRead, FindingUpdate
 
 
 VALID_CREATE_PAYLOAD: dict[str, object] = {
     "title": "SQL injection in search endpoint",
     "affected_asset": "search-api.internal",
     "description": "Unsanitized input reaches a database query.",
+    "source": "penetration-test",
     "severity": Severity.HIGH,
     "cvss_score": 8.1,
 }
@@ -35,6 +36,7 @@ def test_finding_create_accepts_valid_payload() -> None:
     finding = FindingCreate.model_validate(VALID_CREATE_PAYLOAD)
 
     assert finding.title == "SQL injection in search endpoint"
+    assert finding.source == "penetration-test"
     assert finding.severity is Severity.HIGH
     assert finding.cvss_score == 8.1
 
@@ -108,6 +110,33 @@ def test_finding_create_rejects_blank_affected_asset() -> None:
 
     with pytest.raises(ValidationError):
         FindingCreate.model_validate(payload)
+
+
+def test_finding_create_rejects_blank_source() -> None:
+    payload = {**VALID_CREATE_PAYLOAD, "source": "   "}
+
+    with pytest.raises(ValidationError):
+        FindingCreate.model_validate(payload)
+
+
+def test_finding_update_accepts_selected_fields() -> None:
+    update = FindingUpdate(status=FindingStatus.CONFIRMED, cvss_score=9.0)
+
+    assert update.model_dump(exclude_unset=True) == {
+        "status": FindingStatus.CONFIRMED,
+        "cvss_score": 9.0,
+    }
+
+
+@pytest.mark.parametrize("payload", [{}, {"title": None}])
+def test_finding_update_rejects_missing_values(payload: dict[str, object]) -> None:
+    with pytest.raises(ValidationError):
+        FindingUpdate.model_validate(payload)
+
+
+def test_finding_update_rejects_unknown_fields() -> None:
+    with pytest.raises(ValidationError):
+        FindingUpdate.model_validate({"owner": "attacker-controlled"})
 
 
 def test_finding_create_rejects_unexpected_fields() -> None:
