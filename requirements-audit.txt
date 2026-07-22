@@ -1,0 +1,4 @@
+# Runtime dependency roots audited by `make security`.
+# Transitive dependencies are resolved by pip-audit in an isolated environment.
+fastapi==0.139.2
+uvicorn==0.51.0
