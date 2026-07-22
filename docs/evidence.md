@@ -39,6 +39,7 @@ acceptance criteria и assignee. Создание milestones недоступн�
 | [#31](https://github.com/Argentum-Astrum/vulntrack-api/pull/31) | CRUD API | merged, 45 tests |
 | [#32](https://github.com/Argentum-Astrum/vulntrack-api/pull/32) | staged CI | merged, run #24 |
 | [#33](https://github.com/Argentum-Astrum/vulntrack-api/pull/33) | security and hooks | merged after real conflict, run #27 |
+| [#34](https://github.com/Argentum-Astrum/vulntrack-api/pull/34) | docs, research, second conflict | open, full run #30 successful |
 
 Review evidence for PR #30:
 
@@ -73,6 +74,7 @@ merge commits. Обычные commits используют Conventional Commits;
 |---|---|---|
 | [#24](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29883052726) | lint/test/build/security success, release skipped | [quality 8515496840](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29883052726/artifacts/8515496840), [package 8515504485](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29883052726/artifacts/8515504485), [security 8515512321](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29883052726/artifacts/8515512321) |
 | [#27](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29883765831) | 58 tests, 97.39% branch coverage, all mandatory jobs success | [quality 8515763554](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29883765831/artifacts/8515763554), [package 8515770738](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29883765831/artifacts/8515770738), [security 8515781279](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29883765831/artifacts/8515781279) |
+| [#30](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29885192578) | 58 tests, 97.39%, exact cache restored, all mandatory jobs success | [quality 8516264567](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29885192578/artifacts/8516264567), [package 8516270696](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29885192578/artifacts/8516270696), [security 8516279385](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29885192578/artifacts/8516279385) |
 
 Machine-readable outputs: JUnit XML, Cobertura XML, Bandit JSON, pip-audit
 JSON, detect-secrets JSON. Package artifact contains wheel and sdist. Artifact
@@ -87,9 +89,10 @@ security ветки конфликтовали в `Makefile`, `README.md`, `pypr
 `09238aa` и `a8cebc4`, что машинно подтверждает настоящий merge.
 
 Второй конфликт возник между docs и обновлённым `main` в `README.md` и
-`SECURITY.md`. Локальный merge `98bc6a7` имеет родителей `6f430a3` и
-`7d17523`; ручное объединение проверено 58 tests и 97.39% branch coverage.
-Remote hash и PR добавляются после публикации ветви.
+`SECURITY.md`. Local merge `98bc6a7` имеет родителей `6f430a3` и `7d17523`.
+Remote merge [`9142801`](https://github.com/Argentum-Astrum/vulntrack-api/commit/91428014ae234bcf9da0ab1afa2594c13514a945)
+имеет родителей `e1c0a95` и `7d17523`; ручное объединение подтверждено
+успешным run #30 в PR #34.
 
 ## Releases
 

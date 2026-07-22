@@ -81,7 +81,8 @@ authoritative verification for the dependency and secret audits.
 - local two-parent resolution commit: `98bc6a7`;
 - first parent: `6f430a3` (docs branch);
 - second parent: `7d17523` (main after security/hooks PR);
-- remote resolution commit and implementing PR are added after publication.
+- remote two-parent resolution commit: [`9142801`](https://github.com/Argentum-Astrum/vulntrack-api/commit/91428014ae234bcf9da0ab1afa2594c13514a945);
+- implementing PR: [#34](https://github.com/Argentum-Astrum/vulntrack-api/pull/34).
 
 ## Resolution checklist
 

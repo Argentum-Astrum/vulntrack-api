@@ -66,11 +66,16 @@ mandatory job. It is a small experiment, not a global platform-speed claim.
 
 | Run | Scenario | Queue | Lint | Test | Build | Security | Mandatory span |
 |---|---|---:|---:|---:|---:|---:|---:|
-| [#24](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29883052726) | new staged CI, cold pip cache | ≈8 s | 18 s | 20 s | 24 s | 25 s | ≈103 s |
-| [#27](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29883765831) | secret/hooks extension | ≈6 s | 29 s | 17 s | 19 s | 28 s | ≈109 s |
+| [#24](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29883052726) | staged CI; first lint cache cold | ≈8 s | 18 s | 20 s | 24 s | 25 s | ≈103 s |
+| [#27](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29883765831) | secret/hooks extension; cache restored | ≈6 s | 29 s | 17 s | 19 s | 28 s | ≈109 s |
+| [#30](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29885192578) | docs/conflict PR; exact cache restored | ≈6 s | 13 s | 20 s | 20 s | 29 s | ≈99 s |
+| **Median** | three GitHub PR runs | **≈6 s** | **18 s** | **20 s** | **20 s** | **28 s** | **≈103 s** |
 
-Both runs produced three artifacts and correctly skipped release in a PR. A
-third comparable run and median are added after the next full pipeline.
+Run #24's first job had no restore message and saved a new dependency key;
+later jobs restored it. Runs #27 and #30 contain successful restore evidence,
+and every job in #30 restored the exact same dependency key. All three runs
+produced quality, package, and security artifacts and correctly skipped release
+in a PR. The sample describes only this repository and runner image.
 
 ## Local reproduction
 

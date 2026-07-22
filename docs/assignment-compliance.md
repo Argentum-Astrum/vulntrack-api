@@ -11,7 +11,7 @@
 | ≥30 осмысленных commits | выполнено | `git rev-list`, `docs/evidence.md` | уже 30 non-merge + 7 merge commits после PR #33 |
 | Conventional Commits | выполнено | `git log`, `.githooks/commit-msg` | GitHub-generated merge subjects — документированное исключение |
 | ≥3 реально использованных branches, целевое ≥5 | выполнено | PR #3, #16, #30, #31, #32, #33 | bootstrap/domain/storage/CRUD/CI/security; docs и release ветки добавляются |
-| 2 реальных конфликта | выполнено | `docs/conflict-resolution.md`, merges `11144a7` и local `98bc6a7` | второй remote hash добавляется после публикации ветви |
+| 2 реальных конфликта | выполнено | `docs/conflict-resolution.md`, remote merges `11144a7` и `9142801` | оба two-parent commits проверяемы на GitHub |
 | tags/releases v1.0.0 и v1.1.0 | в процессе | issues #25/#28, release job | будут созданы реальным workflow после gates |
 | GitHub Flow обоснован | выполнено | `docs/git-workflow.md` | короткоживущие issue branches + PR |
 | ≥5 GitHub PR | выполнено | PR #3/#16/#30/#31/#32/#33 | уже 6 merged PR |
@@ -36,11 +36,11 @@
 | pre-commit hook | выполнено | `.githooks/pre-commit`, tests | Ruff format + lint |
 | commit-msg hook | выполнено | `.githooks/commit-msg`, tests | Conventional Commits regex |
 | pre-push hook | выполнено | `.githooks/pre-push`, tests | pytest |
-| Обязательные документы | в процессе | README, CONTRIBUTING, CHANGELOG, SECURITY, `docs/*` | report/evidence/comparison создаются в docs PR |
+| Обязательные документы | выполнено | README, CONTRIBUTING, CHANGELOG, SECURITY, `docs/*` | полный editable report в PR #34 |
 | Полный GitHub-сценарий | выполнено | issues → PR → review → Actions → artifact | releases завершают последнюю часть |
 | GitLab/Bitbucket configs | выполнено как переносимый пример | `.gitlab-ci.yml`, `bitbucket-pipelines.yml` | явно не выдаются за запущенные |
 | Общее сравнение 3 платформ | выполнено | `docs/platform-comparison.md` | official docs + GitHub measurements |
-| ≥3 успешных GitHub runs и медиана | в процессе | run #24/#27 | третий сопоставимый full run будет зафиксирован на docs PR |
+| ≥3 успешных GitHub runs и медиана | выполнено | runs #24/#27/#30, `docs/ci-cd.md` | mandatory-span median ≈103 s |
 | ≥3 успешных GitLab runs | ограничение | — | нет GitLab project/runner доступа |
 | Тарифные ограничения | выполнено | platform comparison | сведения датированы и снабжены official URLs |
 | Нет сфабрикованных действий | выполнено | disclosures во всех evidence docs | отсутствующие approvals/runs/settings явно помечены |

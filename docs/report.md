@@ -175,8 +175,9 @@ evidence register.
 ## 18. Результаты GitHub и GitLab
 
 На GitHub реально пройдены issue/branch/commit/PR/review/CI/artifact/merge
-сценарии. Первые сопоставимые mandatory spans — ≈103 и ≈109 секунд; после
-третьего run используется медиана. Это малая серия на GitHub-hosted runners.
+сценарии. Три сопоставимых mandatory spans — ≈103, ≈109 и ≈99 секунд;
+медиана ≈103 секунды. Первый lint cache был cold, runs #27/#30 содержат restore
+evidence. Это малая серия на GitHub-hosted runners, не общий speed benchmark.
 
 Для GitLab подготовлен эквивалентный `.gitlab-ci.yml` с пятью stages, branch/MR/
 tag rules, JUnit/Cobertura, artifacts и tag release через актуальный GitLab CLI.
