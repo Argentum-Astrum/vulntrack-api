@@ -2,10 +2,12 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 import os
 from pathlib import Path
+from uuid import UUID
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Request, status
 
 from vulntrack.repository import SQLiteFindingRepository
+from vulntrack.schemas import FindingCreate, FindingRead
 
 
 def create_app(database_path: str | Path | None = None) -> FastAPI:
@@ -31,6 +33,43 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
     async def health() -> dict[str, str]:
         """Return the application health status."""
         return {"status": "ok"}
+
+    @application.post(
+        "/findings",
+        response_model=FindingRead,
+        status_code=status.HTTP_201_CREATED,
+        tags=["findings"],
+    )
+    async def create_finding(
+        payload: FindingCreate,
+        request: Request,
+    ) -> FindingRead:
+        """Register one validated security finding."""
+        return request.app.state.repository.create(payload)
+
+    @application.get(
+        "/findings",
+        response_model=list[FindingRead],
+        tags=["findings"],
+    )
+    async def list_findings(request: Request) -> list[FindingRead]:
+        """Return every registered finding."""
+        return request.app.state.repository.list()
+
+    @application.get(
+        "/findings/{finding_id}",
+        response_model=FindingRead,
+        tags=["findings"],
+    )
+    async def get_finding(finding_id: UUID, request: Request) -> FindingRead:
+        """Return a finding by UUID."""
+        finding = request.app.state.repository.get(finding_id)
+        if finding is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="finding not found",
+            )
+        return finding
 
     return application
 
