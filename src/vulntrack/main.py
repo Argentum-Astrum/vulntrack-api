@@ -2,12 +2,19 @@ import os
 from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import Annotated
 from uuid import UUID
 
-from fastapi import FastAPI, HTTPException, Request, Response, status
+from fastapi import FastAPI, HTTPException, Query, Request, Response, status
 
+from vulntrack.domain import FindingStatus, Severity
 from vulntrack.repository import SQLiteFindingRepository
-from vulntrack.schemas import FindingCreate, FindingRead, FindingUpdate
+from vulntrack.schemas import (
+    FindingCreate,
+    FindingRead,
+    FindingStatistics,
+    FindingUpdate,
+)
 
 
 def create_app(database_path: str | Path | None = None) -> FastAPI:
@@ -52,9 +59,25 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
         response_model=list[FindingRead],
         tags=["findings"],
     )
-    async def list_findings(request: Request) -> list[FindingRead]:
-        """Return every registered finding."""
-        return request.app.state.repository.list()
+    async def list_findings(
+        request: Request,
+        severity: Severity | None = None,
+        finding_status: Annotated[
+            FindingStatus | None,
+            Query(alias="status"),
+        ] = None,
+    ) -> list[FindingRead]:
+        """Return findings matching optional severity and status filters."""
+        return request.app.state.repository.list(severity, finding_status)
+
+    @application.get(
+        "/findings/statistics",
+        response_model=FindingStatistics,
+        tags=["findings"],
+    )
+    async def finding_statistics(request: Request) -> FindingStatistics:
+        """Return total and per-severity finding counts."""
+        return request.app.state.repository.statistics()
 
     @application.get(
         "/findings/{finding_id}",
