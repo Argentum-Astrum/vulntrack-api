@@ -1,0 +1,93 @@
+# Equivalent reference configuration for Bitbucket Cloud.
+# It is intentionally committed for portability research and has not been run
+# because this project is not connected to a Bitbucket workspace.
+image: python:3.12-slim
+
+definitions:
+  caches:
+    pip: ~/.cache/pip
+  steps:
+    - step: &lint
+        name: 1 - Format and lint
+        caches:
+          - pip
+        script:
+          - python -m pip install -e ".[dev]"
+          - make format-check
+          - make lint
+
+    - step: &test
+        name: 2 - Test and coverage
+        caches:
+          - pip
+        script:
+          - python -m pip install -e ".[dev]"
+          - make test
+        artifacts:
+          upload:
+            - name: quality-reports
+              type: shared
+              paths:
+                - reports/**
+
+    - step: &build
+        name: 3 - Build package
+        caches:
+          - pip
+        script:
+          - python -m pip install -e ".[dev]"
+          - make build
+        artifacts:
+          upload:
+            - name: python-package
+              type: shared
+              paths:
+                - dist/**
+
+    - step: &security
+        name: 4 - Security checks
+        caches:
+          - pip
+        script:
+          - python -m pip install -e ".[dev]"
+          - make security
+        artifacts:
+          upload:
+            - name: security-reports
+              type: shared
+              paths:
+                - reports/**
+
+    - step: &release
+        name: 5 - Prepare release artifact
+        script:
+          - test -n "$BITBUCKET_TAG"
+          - sha256sum dist/* > dist/SHA256SUMS
+        artifacts:
+          upload:
+            - name: release-package
+              type: shared
+              paths:
+                - dist/**
+
+pipelines:
+  default:
+    - step: *lint
+    - step: *test
+    - step: *build
+    - step: *security
+
+  pull-requests:
+    "**":
+      - step: *lint
+      - step: *test
+      - step: *build
+      - step: *security
+
+  tags:
+    "v*":
+      - step: *lint
+      - step: *test
+      - step: *build
+      - step: *security
+      - step: *release
