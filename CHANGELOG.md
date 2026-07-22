@@ -5,10 +5,14 @@ and releases follow Semantic Versioning.
 
 ## [Unreleased]
 
-### Planned
+## [1.1.0] - 2026-07-21
 
-- Filtering by severity and status.
-- Severity statistics endpoint.
+### Added
+
+- Enum-validated finding filters for `severity` and `status`.
+- Severity statistics endpoint with total and zero-filled category counts.
+- Unit and integration coverage for filter combinations and invalid values.
+- API examples for reporting queries.
 
 ## [1.0.0] - 2026-07-21
 
@@ -28,5 +32,6 @@ and releases follow Semantic Versioning.
 
 - Initial repository bootstrap.
 
-[Unreleased]: https://github.com/Argentum-Astrum/vulntrack-api/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/Argentum-Astrum/vulntrack-api/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/Argentum-Astrum/vulntrack-api/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/Argentum-Astrum/vulntrack-api/releases/tag/v1.0.0
