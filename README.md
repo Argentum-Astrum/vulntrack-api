@@ -33,13 +33,30 @@ Interactive API documentation:
 
 `http://127.0.0.1:8000/docs`
 
-## Run tests
+## Local verification and hooks
+
+Run the automated suite:
 
 `python -m pytest -q`
 
-## Run lint
+Run source, dependency, and candidate-secret checks:
 
-`python -m ruff check .`
+`make security`
+
+Enable the versioned hooks for this clone:
+
+`./scripts/install-hooks.sh`
+
+The hooks check formatting and lint before commit, enforce Conventional Commits
+subjects, and run tests before push. CI remains authoritative because local
+hooks can be bypassed. Disable them with:
+
+`./scripts/install-hooks.sh --uninstall`
+
+## Security reporting
+
+Do not place exploit details or credentials in a public issue. Follow
+[`SECURITY.md`](SECURITY.md) for supported versions and coordinated disclosure.
 
 ## License
 
