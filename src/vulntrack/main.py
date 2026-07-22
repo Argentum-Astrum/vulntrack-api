@@ -4,10 +4,10 @@ import os
 from pathlib import Path
 from uuid import UUID
 
-from fastapi import FastAPI, HTTPException, Request, status
+from fastapi import FastAPI, HTTPException, Request, Response, status
 
 from vulntrack.repository import SQLiteFindingRepository
-from vulntrack.schemas import FindingCreate, FindingRead
+from vulntrack.schemas import FindingCreate, FindingRead, FindingUpdate
 
 
 def create_app(database_path: str | Path | None = None) -> FastAPI:
@@ -70,6 +70,39 @@ def create_app(database_path: str | Path | None = None) -> FastAPI:
                 detail="finding not found",
             )
         return finding
+
+    @application.put(
+        "/findings/{finding_id}",
+        response_model=FindingRead,
+        tags=["findings"],
+    )
+    async def update_finding(
+        finding_id: UUID,
+        payload: FindingUpdate,
+        request: Request,
+    ) -> FindingRead:
+        """Apply a validated partial update to a finding."""
+        finding = request.app.state.repository.update(finding_id, payload)
+        if finding is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="finding not found",
+            )
+        return finding
+
+    @application.delete(
+        "/findings/{finding_id}",
+        status_code=status.HTTP_204_NO_CONTENT,
+        tags=["findings"],
+    )
+    async def delete_finding(finding_id: UUID, request: Request) -> Response:
+        """Remove one finding."""
+        if not request.app.state.repository.delete(finding_id):
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="finding not found",
+            )
+        return Response(status_code=status.HTTP_204_NO_CONTENT)
 
     return application
 
