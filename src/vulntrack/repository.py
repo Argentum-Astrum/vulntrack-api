@@ -1,8 +1,8 @@
+import sqlite3
 from collections.abc import Iterator
 from contextlib import contextmanager
 from datetime import UTC, datetime
 from pathlib import Path
-import sqlite3
 from uuid import UUID, uuid4
 
 from vulntrack.domain import FindingStatus
