@@ -33,6 +33,29 @@ curl --fail-with-body http://127.0.0.1:8000/findings
 curl --fail-with-body http://127.0.0.1:8000/findings/FINDING_UUID
 ```
 
+The collection accepts optional enum-validated filters. They can be combined;
+an unsupported value returns `422` rather than silently producing no results.
+
+```bash
+curl --fail-with-body \
+  'http://127.0.0.1:8000/findings?severity=high&status=confirmed'
+```
+
+## Severity statistics
+
+```bash
+curl --fail-with-body http://127.0.0.1:8000/findings/statistics
+```
+
+The response always includes every severity category, including zero counts:
+
+```json
+{
+  "total": 2,
+  "by_severity": {"low": 1, "medium": 0, "high": 0, "critical": 1}
+}
+```
+
 ## Update triage state
 
 `PUT` accepts one or more fields and rejects an empty object.
