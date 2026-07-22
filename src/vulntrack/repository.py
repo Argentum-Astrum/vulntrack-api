@@ -5,8 +5,13 @@ from datetime import UTC, datetime
 from pathlib import Path
 from uuid import UUID, uuid4
 
-from vulntrack.domain import FindingStatus
-from vulntrack.schemas import FindingCreate, FindingRead, FindingUpdate
+from vulntrack.domain import FindingStatus, Severity
+from vulntrack.schemas import (
+    FindingCreate,
+    FindingRead,
+    FindingStatistics,
+    FindingUpdate,
+)
 
 
 class SQLiteFindingRepository:
@@ -84,13 +89,40 @@ class SQLiteFindingRepository:
             ).fetchone()
         return self._to_finding(row) if row is not None else None
 
-    def list(self) -> list[FindingRead]:
-        """Return findings from oldest to newest."""
+    def list(
+        self,
+        severity: Severity | None = None,
+        status: FindingStatus | None = None,
+    ) -> list[FindingRead]:
+        """Return optionally filtered findings from oldest to newest."""
+        severity_value = severity.value if severity is not None else None
+        status_value = status.value if status is not None else None
         with self._connection() as connection:
             rows = connection.execute(
-                "SELECT * FROM findings ORDER BY created_at, id"
+                """
+                SELECT * FROM findings
+                WHERE (? IS NULL OR severity = ?)
+                  AND (? IS NULL OR status = ?)
+                ORDER BY created_at, id
+                """,
+                (severity_value, severity_value, status_value, status_value),
             ).fetchall()
         return [self._to_finding(row) for row in rows]
+
+    def statistics(self) -> FindingStatistics:
+        """Return total findings and a complete severity breakdown."""
+        counts = {severity: 0 for severity in Severity}
+        with self._connection() as connection:
+            rows = connection.execute(
+                """
+                SELECT severity, COUNT(*) AS finding_count
+                FROM findings
+                GROUP BY severity
+                """
+            ).fetchall()
+        for row in rows:
+            counts[Severity(row["severity"])] = int(row["finding_count"])
+        return FindingStatistics(total=sum(counts.values()), by_severity=counts)
 
     def update(
         self,
