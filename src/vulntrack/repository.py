@@ -6,7 +6,7 @@ import sqlite3
 from uuid import UUID, uuid4
 
 from vulntrack.domain import FindingStatus
-from vulntrack.schemas import FindingCreate, FindingRead
+from vulntrack.schemas import FindingCreate, FindingRead, FindingUpdate
 
 
 class SQLiteFindingRepository:
@@ -91,3 +91,32 @@ class SQLiteFindingRepository:
                 "SELECT * FROM findings ORDER BY created_at, id"
             ).fetchall()
         return [self._to_finding(row) for row in rows]
+
+    def update(
+        self,
+        finding_id: UUID,
+        payload: FindingUpdate,
+    ) -> FindingRead | None:
+        """Apply a validated partial update and return the current record."""
+        if self.get(finding_id) is None:
+            return None
+
+        changes = payload.model_dump(mode="json", exclude_unset=True)
+        changes["updated_at"] = datetime.now(UTC).isoformat()
+        assignments = ", ".join(f"{name} = ?" for name in changes)
+        values = [*changes.values(), str(finding_id)]
+        with self._connection() as connection:
+            connection.execute(
+                f"UPDATE findings SET {assignments} WHERE id = ?",  # noqa: S608
+                values,
+            )
+        return self.get(finding_id)
+
+    def delete(self, finding_id: UUID) -> bool:
+        """Delete one finding and report whether a row was removed."""
+        with self._connection() as connection:
+            cursor = connection.execute(
+                "DELETE FROM findings WHERE id = ?",
+                (str(finding_id),),
+            )
+        return cursor.rowcount == 1
