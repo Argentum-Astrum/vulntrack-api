@@ -10,7 +10,7 @@ and releases follow Semantic Versioning.
 - Filtering by severity and status.
 - Severity statistics endpoint.
 
-## [1.0.0] - pending
+## [1.0.0] - 2026-07-21
 
 ### Added
 

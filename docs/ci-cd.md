@@ -28,7 +28,7 @@ GitHub Actions runs for:
 - manual `workflow_dispatch` diagnostics.
 
 The release job is skipped unless the ref is a `v*` tag or `main` carries the
-explicit documented `release:` commit context. It has `contents: write`; every
+explicit documented `chore(release):` commit context. It has `contents: write`; every
 other job keeps `contents: read`.
 
 GitLab workflow rules cover merge-request pipelines, branch pipelines, and tag
