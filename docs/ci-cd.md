@@ -77,6 +77,18 @@ and every job in #30 restored the exact same dependency key. All three runs
 produced quality, package, and security artifacts and correctly skipped release
 in a PR. The sample describes only this repository and runner image.
 
+## Executed releases
+
+| Version | Main workflow | Tag target | Release result |
+|---|---|---|---|
+| `v1.0.0` | [run 29885871737](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29885871737) | `0ac42b2` | five jobs success; wheel + sdist published |
+| `v1.1.0` | [run 29886550409](https://github.com/Argentum-Astrum/vulntrack-api/actions/runs/29886550409) | `0b203d1` | five jobs success; wheel + sdist published |
+
+In both cases the PR run skipped release, the Conventional
+`chore(release):` merge triggered a new `main` run, and only that run granted
+write permission to its final job. GitHub created the tag and Release after the
+same run's package and security jobs succeeded.
+
 ## Local reproduction
 
 ```bash
