@@ -33,17 +33,35 @@ Interactive API documentation:
 
 `http://127.0.0.1:8000/docs`
 
-## Local verification and hooks
+## Local quality gates
 
-Run the automated suite:
+The same Make targets are used locally, by GitHub Actions, and by the GitLab CI
+configuration:
 
-`python -m pytest -q`
+```bash
+make format-check
+make lint
+make test
+make build
+make security
+```
 
-Run source, dependency, and candidate-secret checks:
+`make test` writes JUnit, coverage XML, and HTML coverage reports under
+`reports/` and enforces at least 80% coverage. `make security` runs Bandit and
+audits the pinned runtime dependency roots. Generated reports and packages are
+not committed.
 
-`make security`
+## CI/CD
 
-Enable the versioned hooks for this clone:
+The staged pipelines run `lint → test → build → security → release`. GitHub
+Actions executes on pushes, pull requests, version tags, and manual dispatch.
+The equivalent GitLab configuration uses the same Make targets. Build and
+machine-readable report artifacts are retained by each platform; release jobs
+run only in the documented release context.
+
+## Versioned Git hooks
+
+Enable the repository hooks for this clone:
 
 `./scripts/install-hooks.sh`
 

@@ -2,8 +2,8 @@
 """Fail when a detect-secrets JSON report contains candidate credentials."""
 
 import json
-from pathlib import Path
 import sys
+from pathlib import Path
 
 
 def main(report_path: str) -> int:

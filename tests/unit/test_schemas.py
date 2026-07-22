@@ -7,7 +7,6 @@ from pydantic import ValidationError
 from vulntrack.domain import FindingStatus, Severity
 from vulntrack.schemas import FindingCreate, FindingRead, FindingUpdate
 
-
 VALID_CREATE_PAYLOAD: dict[str, object] = {
     "title": "SQL injection in search endpoint",
     "affected_asset": "search-api.internal",
