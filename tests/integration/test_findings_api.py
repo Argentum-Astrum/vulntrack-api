@@ -107,3 +107,53 @@ def test_empty_update_is_rejected(client: TestClient) -> None:
     response = client.put(f"/findings/{created['id']}", json={})
 
     assert response.status_code == 422
+
+
+def test_list_filters_by_severity_and_status(client: TestClient) -> None:
+    create_finding(client, title="Low finding", severity="low", cvss_score=2.1)
+    confirmed = create_finding(
+        client,
+        title="Confirmed high finding",
+        severity="high",
+    )
+    client.put(f"/findings/{confirmed['id']}", json={"status": "confirmed"})
+
+    severity_response = client.get("/findings", params={"severity": "high"})
+    status_response = client.get("/findings", params={"status": "confirmed"})
+    combined_response = client.get(
+        "/findings",
+        params={"severity": "low", "status": "confirmed"},
+    )
+
+    assert [item["id"] for item in severity_response.json()] == [confirmed["id"]]
+    assert status_response.json()[0]["id"] == confirmed["id"]
+    assert combined_response.json() == []
+
+
+@pytest.mark.parametrize(
+    ("parameter", "value"),
+    [("severity", "blocker"), ("status", "archived")],
+)
+def test_list_rejects_invalid_filters(
+    client: TestClient,
+    parameter: str,
+    value: str,
+) -> None:
+    response = client.get("/findings", params={parameter: value})
+
+    assert response.status_code == 422
+
+
+def test_statistics_report_all_severity_categories(client: TestClient) -> None:
+    create_finding(client, title="Low finding", severity="low", cvss_score=2.1)
+    create_finding(
+        client, title="Critical finding", severity="critical", cvss_score=9.8
+    )
+
+    response = client.get("/findings/statistics")
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "total": 2,
+        "by_severity": {"low": 1, "medium": 0, "high": 0, "critical": 1},
+    }

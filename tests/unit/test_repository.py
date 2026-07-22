@@ -52,6 +52,40 @@ def test_list_returns_findings_in_creation_order(
     assert [finding.id for finding in repository.list()] == [first.id, second.id]
 
 
+def test_list_filters_by_severity_and_status(
+    repository: SQLiteFindingRepository,
+) -> None:
+    low = repository.create(make_payload(title="Low finding", severity=Severity.LOW))
+    high = repository.create(make_payload(title="High finding", severity=Severity.HIGH))
+    repository.update(high.id, FindingUpdate(status=FindingStatus.CONFIRMED))
+
+    assert [finding.id for finding in repository.list(severity=Severity.LOW)] == [
+        low.id
+    ]
+    assert [
+        finding.id for finding in repository.list(status=FindingStatus.CONFIRMED)
+    ] == [high.id]
+    assert repository.list(Severity.LOW, FindingStatus.CONFIRMED) == []
+
+
+def test_statistics_include_empty_severity_categories(
+    repository: SQLiteFindingRepository,
+) -> None:
+    repository.create(make_payload(severity=Severity.LOW))
+    repository.create(make_payload(title="Second low", severity=Severity.LOW))
+    repository.create(make_payload(title="Critical", severity=Severity.CRITICAL))
+
+    statistics = repository.statistics()
+
+    assert statistics.total == 3
+    assert statistics.by_severity == {
+        Severity.LOW: 2,
+        Severity.MEDIUM: 0,
+        Severity.HIGH: 0,
+        Severity.CRITICAL: 1,
+    }
+
+
 def test_records_survive_repository_recreation(tmp_path: Path) -> None:
     database = tmp_path / "durable.sqlite3"
     created = SQLiteFindingRepository(database).create(make_payload())

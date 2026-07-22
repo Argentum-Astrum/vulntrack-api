@@ -64,3 +64,10 @@ class FindingRead(FindingCreate):
     status: FindingStatus
     created_at: datetime
     updated_at: datetime
+
+
+class FindingStatistics(BaseModel):
+    """Aggregate finding counts returned by the statistics endpoint."""
+
+    total: int
+    by_severity: dict[Severity, int]
